@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "./openzeppelin/token/ERC20/ERC20.sol";
-import "./openzeppelin/access/Ownable.sol";
-import "./openzeppelin/proxy/utils/UUPSUpgradeable.sol";
-import "./openzeppelin/proxy/utils/Initializable.sol";
+import "./openzeppelin-upgradeable/access/OwnableUpgradeable.sol";
+import "./openzeppelin-upgradeable/proxy/utils/Initializable.sol";
+import "./openzeppelin-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "./openzeppelin-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
-contract SkinyCoinV3 is Initializable, ERC20, Ownable, UUPSUpgradeable {
+contract SkinyCoinV3 is Initializable, ERC20Upgradeable, OwnableUpgradeable, UUPSUpgradeable {
+
     uint256 public devFee;      // 2%
     uint256 public farmFee;     // 1%
     uint256 public burnFee;     // 1%
@@ -15,13 +16,13 @@ contract SkinyCoinV3 is Initializable, ERC20, Ownable, UUPSUpgradeable {
 
     mapping(address => bool) private _isExcludedFromFees;
 
-    constructor() ERC20("SkinyCoinV3", "SKINY") {
+    constructor() {
         _disableInitializers();
     }
 
     function initialize(address _devWallet, address _farmWallet) public initializer {
         __ERC20_init("SkinyCoinV3", "SKINY");
-        __Ownable_init(msg.sender);
+        __Ownable_init();
         __UUPSUpgradeable_init();
 
         devFee = 2;
